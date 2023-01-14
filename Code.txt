@@ -1,13 +1,12 @@
+[code]
 
 //Include the library files
-#include <LiquidCrystal_I2C.h>
+
 #define BLYNK_PRINT Serial
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
 #include <DHT.h>
 
-//Initialize the LCD display
-LiquidCrystal_I2C lcd(0x27, 16, 2);  // iF YOU ARE FACING PROBLEM REGARDING WITH 16X2 LCD DISPLAY PLEASE PREFER THE VIDEO LINK PROVIDED IN THE DESCRIPTION
 
 char auth[] = "LHD57jsUjB_QVPZdodvfB_FdmKccTB_b";//Enter your Auth token
 char ssid[] = "kmani";//Enter your WIFI name
@@ -33,8 +32,7 @@ BLYNK_WRITE(V0) {
 
 void setup() {
   Serial.begin(9600);
-  lcd.begin(); // It may be lcd.init if lcd.begin(); not works then try with lcd.init()
-  lcd.backlight();
+
   pinMode(Buzzer, OUTPUT);
   pinMode(PIR, INPUT);
   pinMode(trig, OUTPUT);
@@ -46,12 +44,6 @@ void setup() {
   Blynk.begin(auth, ssid, pass, "blynk.cloud", 80);
   dht.begin();
 
-  lcd.setCursor(0, 0);
-  lcd.print("Home Automation");
-  lcd.setCursor(4, 1);
-  lcd.print("System");
-  delay(4000);
-  lcd.clear();
 
 //Call the functions
   timer.setInterval(100L, gassensor);
@@ -72,10 +64,7 @@ void gassensor() {
     digitalWrite(Buzzer, HIGH);
   }
   Blynk.virtualWrite(V1, value);
-  lcd.setCursor(0, 0);
-  lcd.print("G:");
-  lcd.print(" ");
-  lcd.print(value);
+
 
 }
 
@@ -91,15 +80,7 @@ void DHT11sensor() {
   Blynk.virtualWrite(V2, t);
   Blynk.virtualWrite(V3, h);
 
-  lcd.setCursor(8, 0);
-  lcd.print("T:");
-  lcd.print(t);
 
-  lcd.setCursor(0, 1);
-  lcd.print("H:");
-  lcd.print(h);
-
-}
 
 //Get the PIR sensor values
 void pirsensor() {
@@ -125,10 +106,7 @@ void ultrasonic() {
   long cm = t / 29 / 2;
   Blynk.virtualWrite(V4, cm);
 
-  lcd.setCursor(8, 1);
-  lcd.print("W:");
-  lcd.print(cm);
-  lcd.print("  ");
+
 }
 
 //Get buttons values
@@ -155,3 +133,4 @@ void loop() {
   Blynk.run();//Run the Blynk library
   timer.run();//Run the Blynk timer
 }
+[/code]
